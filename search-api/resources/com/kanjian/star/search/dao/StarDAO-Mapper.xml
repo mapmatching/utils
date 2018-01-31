@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kanjian.star.search.dao.StarDAO">
+    <select id="getAllTrack" parameterType="hashmap" resultType="hashmap">
+        SELECT
+            id,
+            name,
+            version,
+            duration,
+            english_name,
+            no_lyrics
+        FROM
+            kanjian_ddex_track
+        WHERE
+            id&gt;#{start} AND id&lt;=#{end}
+    </select>
+    <select id="getMaxTrackId" resultType="int">
+        select MAX(id) FROM kanjian_ddex_track
+    </select>
+    <select id="getAllAlbum" parameterType="hashmap" resultType="hashmap">
+        SELECT
+            id,
+            name,
+            version,
+            _upc as upc,
+            distribution_company,
+            author_list,
+            DATE_FORMAT(release_date, '%Y%m%d') as release_date,
+            material_review_status,
+            metadata_review_status,
+            delivery_status,
+            source
+        FROM
+            kanjian_ddex_album
+        WHERE
+            id&gt;#{start} AND id&lt;=#{end}
+    </select>
+    <select id="getMaxAlbumId" resultType="int">
+        select MAX(id) FROM kanjian_ddex_track
+    </select>
+</mapper>
+

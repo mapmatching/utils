@@ -1,0 +1,23 @@
+FROM centos
+
+User root
+
+RUN yum install -y java-1.8.0-openjdk-devel unzip lftp
+RUN yum clean all
+
+# Install Gradle
+RUN cd /usr/local/ && curl -L -O https://services.gradle.org/distributions/gradle-3.3-all.zip && unzip -o gradle-3.3-all.zip
+
+# Environment variables
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
+ENV ANDROID_HOME /usr/local/android-sdk-linux
+ENV GRADLE_HOME /usr/local/gradle-3.3
+ENV PATH $PATH:$GRADLE_HOME/bin
+
+# Clean up
+RUN rm -rf /usr/local/android-sdk_r24.4.1-linux.tgz
+RUN rm -rf /usr/local/gradle-3.3-all.zip
+
+WORKDIR /usr/src/app
+
+CMD ["gradle", "build"]

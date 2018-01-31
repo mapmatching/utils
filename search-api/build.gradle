@@ -1,0 +1,19 @@
+apply plugin: 'war'
+
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.7
+webAppDirName = 'web'
+sourceSets.main.java.srcDir 'src'
+sourceSets.main.resources.srcDir 'resources'
+
+
+dependencies {
+    // this jar will not be copied into war
+    providedCompile files('compile-lib/servlet-api.jar')
+    compile fileTree(dir: "${webAppDirName}/WEB-INF/lib", include: '*.jar')
+}
+
+war {
+    baseName = 'star-search-api'
+    destinationDir = new File('dist/')
+}

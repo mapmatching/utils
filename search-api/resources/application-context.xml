@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				   http://www.springframework.org/schema/beans/spring-beans.xsd
+        				   http://www.springframework.org/schema/context
+        				   http://www.springframework.org/schema/context/spring-context.xsd
+        				   http://www.springframework.org/schema/rabbit
+						   http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+    <!-- 资源文件-->
+    <context:property-placeholder location="classpath:jdbc.properties,classpath:config.properties"/>
+
+    <context:component-scan base-package="com.kanjian.star">
+    </context:component-scan>
+
+    <!-- boneCP 数据库连接池配置信息-->
+    <bean id="starDataSource" class="com.jolbox.bonecp.BoneCPDataSource">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${star.jdbc.url}" />
+		<property name="username" value="${star.jdbc.username}"/>
+		<property name="password" value="${star.jdbc.password}"/>
+		<property name="idleConnectionTestPeriod" value="60"/>
+		<property name="idleMaxAge" value="2400"/>
+		<property name="maxConnectionsPerPartition" value="3"/>
+		<property name="minConnectionsPerPartition" value="1"/>
+		<property name="partitionCount" value="3"/>
+		<property name="acquireIncrement" value="1"/>
+	</bean>
+
+    <!-- spring与mybatis整合 读取所有mybatis配置文件-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="starDataSource" />
+    	<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+ 	
+</beans>
